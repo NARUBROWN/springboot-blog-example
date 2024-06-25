@@ -1,4 +1,4 @@
-package com.example.blog.domain;
+package com.example.blog.data.domain;
 
 import jakarta.persistence.*;
 import lombok.AccessLevel;
@@ -15,6 +15,9 @@ public class Category {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    @Column(nullable = false)
+    private String name;
 
     @OneToMany(mappedBy = "category")
     private List<Post> posts;

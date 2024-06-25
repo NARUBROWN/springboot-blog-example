@@ -1,4 +1,4 @@
-package com.example.blog.domain;
+package com.example.blog.data.domain;
 
 import jakarta.persistence.*;
 import lombok.AccessLevel;
@@ -17,4 +17,7 @@ public class Comment {
     @Column(nullable = false)
     private String content;
 
+    @ManyToOne
+    @JoinColumn(name = "post_id")
+    private Post post;
 }

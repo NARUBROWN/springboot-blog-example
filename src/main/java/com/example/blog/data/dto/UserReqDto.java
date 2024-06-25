@@ -6,8 +6,7 @@ import lombok.NoArgsConstructor;
 
 @Getter
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
-public class UserDto {
-    private Long id;
+public class UserReqDto {
     private String username;
     private String password;
 }
