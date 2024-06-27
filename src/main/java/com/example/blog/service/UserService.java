@@ -37,7 +37,7 @@ public class UserService {
     }
 
     @Transactional
-    public UserResDto modify(Long id, UserReqDto userReqDto) {
+    public UserResDto update(Long id, UserReqDto userReqDto) {
         User foundUser = userRepository.findById(id).orElseThrow(() -> new RuntimeException("찾는 유저가 없습니다."));
         foundUser.updateUserByDto(userReqDto);
         try {
