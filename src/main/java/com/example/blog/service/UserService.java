@@ -14,7 +14,7 @@ public class UserService {
     private final UserRepository userRepository;
 
     @Transactional
-    public boolean register(UserReqDto userReqDto) {
+    public boolean create(UserReqDto userReqDto) {
         User newUser = User.builder()
                 .username(userReqDto.getUsername())
                 .password(userReqDto.getPassword())

@@ -20,7 +20,7 @@ public class PostService {
     private final CategoryRepository categoryRepository;
 
     @Transactional
-    public boolean save(PostReqDto postReqDto) {
+    public boolean create(PostReqDto postReqDto) {
         Post newPost = Post.builder()
                 .title(postReqDto.getTitle())
                 .content(postReqDto.getContent())

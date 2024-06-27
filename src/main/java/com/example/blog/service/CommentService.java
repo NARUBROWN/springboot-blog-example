@@ -15,7 +15,7 @@ public class CommentService {
     private final CommentRepository commentRepository;
     private final PostRepository postRepository;
 
-    public boolean register(CommentReqDto commentReqDto, Long postId) {
+    public boolean create(CommentReqDto commentReqDto, Long postId) {
         Post post = postRepository.findById(postId).orElseThrow(() -> new RuntimeException("게시글을 찾을 수 없습니다."));
         Comment newComment = Comment.builder()
                 .content(commentReqDto.getContent())

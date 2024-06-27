@@ -12,7 +12,7 @@ import org.springframework.stereotype.Service;
 public class CategoryService {
     private final CategoryRepository categoryRepository;
 
-    public boolean register(CategoryReqDto categoryReqDto) {
+    public boolean create(CategoryReqDto categoryReqDto) {
         Category category = new Category(categoryReqDto.getName());
         try {
             categoryRepository.save(category);
