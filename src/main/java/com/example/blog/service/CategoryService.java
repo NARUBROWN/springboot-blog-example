@@ -26,16 +26,16 @@ public class CategoryService {
 
     }
 
-    public CategoryResDto read(Long categoryId) {
-        Category category = categoryRepository.findById(categoryId).orElseThrow(() -> new RuntimeException("카테고리를 찾는데 실패했습니다."));
+    public CategoryResDto read(Long category_id) {
+        Category category = categoryRepository.findById(category_id).orElseThrow(() -> new RuntimeException("카테고리를 찾는데 실패했습니다."));
         return CategoryResDto.builder()
                 .id(category.getId())
                 .name(category.getName())
                 .build();
     }
 
-    public boolean update(CategoryReqDto categoryReqDto, Long categoryId) {
-        Category foundCategory = categoryRepository.findById(categoryId).orElseThrow(() -> new RuntimeException("카테고리를 찾는데 실패했습니다."));
+    public boolean update(CategoryReqDto categoryReqDto, Long category_id) {
+        Category foundCategory = categoryRepository.findById(category_id).orElseThrow(() -> new RuntimeException("카테고리를 찾는데 실패했습니다."));
         foundCategory.updateName(categoryReqDto.getName());
 
         try {
@@ -46,18 +46,18 @@ public class CategoryService {
         }
     }
 
-    public boolean delete(Long categoryId) {
+    public boolean delete(Long category_id) {
         try {
-            categoryRepository.deleteById(categoryId);
+            categoryRepository.deleteById(category_id);
             return true;
         } catch (Exception e) {
             throw new RuntimeException("카테고리를 삭제하는데 실패했습니다.");
         }
     }
 
-    public CategoryPostReqDto getCategoryPost(Long categoryId) {
-        Category foundCategory = categoryRepository.findById(categoryId).orElseThrow(() -> new RuntimeException("해당 ID를 가진 카테고리가 없습니다."));
-        List<PostListResDto> postReqDtoList = postRepository.findAllByCategory_Id(categoryId).stream()
+    public CategoryPostReqDto getCategoryPost(Long category_id) {
+        Category foundCategory = categoryRepository.findById(category_id).orElseThrow(() -> new RuntimeException("해당 ID를 가진 카테고리가 없습니다."));
+        List<PostListResDto> postReqDtoList = postRepository.findAllByCategory_Id(category_id).stream()
                 .map(PostListResDto::from).toList();
         return new CategoryPostReqDto(
                 foundCategory.getName(), postReqDtoList

@@ -20,14 +20,14 @@ public class PostService {
     private final CategoryRepository categoryRepository;
 
     @Transactional
-    public boolean create(PostReqDto postReqDto, String username, Long categoryId) {
+    public boolean create(PostReqDto postReqDto, String username, Long category_id) {
         Post newPost = Post.builder()
                 .title(postReqDto.getTitle())
                 .content(postReqDto.getContent())
                 .build();
 
         User user = userRepository.findByUsername(username).orElseThrow(() -> new RuntimeException("사용자를 찾을 수 없습니다."));
-        Category category = categoryRepository.findById(categoryId).orElseThrow(() -> new RuntimeException("카테고리를 찾을 수 없습니다."));
+        Category category = categoryRepository.findById(category_id).orElseThrow(() -> new RuntimeException("카테고리를 찾을 수 없습니다."));
 
         newPost.updateUser(user);
         newPost.updateCategory(category);
@@ -41,8 +41,8 @@ public class PostService {
     }
 
     @Transactional(readOnly = true)
-    public PostResDto read(Long id) {
-       Post foundPost = postRepository.findById(id).orElseThrow(() -> new RuntimeException("게시글을 찾을 수 없습니다."));
+    public PostResDto read(Long post_id) {
+       Post foundPost = postRepository.findById(post_id).orElseThrow(() -> new RuntimeException("게시글을 찾을 수 없습니다."));
        return PostResDto.builder()
                .id(foundPost.getId())
                .username(foundPost.getUser().getUsername())
@@ -52,8 +52,8 @@ public class PostService {
                .build();
     }
 
-    public PostResDto update(Long id, PostReqDto postReqDto) {
-        Post foundPost = postRepository.findById(id).orElseThrow(() -> new RuntimeException("게시글이 없습니다."));
+    public PostResDto update(Long post_id, PostReqDto postReqDto) {
+        Post foundPost = postRepository.findById(post_id).orElseThrow(() -> new RuntimeException("게시글이 없습니다."));
         foundPost.updatePostByDto(postReqDto);
         try {
             postRepository.save(foundPost);
@@ -69,9 +69,9 @@ public class PostService {
         }
     }
 
-    public boolean delete(Long id) {
+    public boolean delete(Long post_id) {
         try {
-            postRepository.deleteById(id);
+            postRepository.deleteById(post_id);
             return true;
         } catch (Exception e) {
             return false;

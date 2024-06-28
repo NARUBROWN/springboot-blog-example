@@ -30,8 +30,8 @@ public class UserService {
     }
 
     @Transactional(readOnly = true)
-    public UserResDto read(Long id) {
-        User user = userRepository.findById(id).orElseThrow(() -> new RuntimeException("찾는 유저가 없습니다."));
+    public UserResDto read(Long user_id) {
+        User user = userRepository.findById(user_id).orElseThrow(() -> new RuntimeException("찾는 유저가 없습니다."));
         return UserResDto.builder()
                 .id(user.getId())
                 .username(user.getUsername())
@@ -39,8 +39,8 @@ public class UserService {
     }
 
     @Transactional
-    public UserResDto update(Long id, UserReqDto userReqDto) {
-        User foundUser = userRepository.findById(id).orElseThrow(() -> new RuntimeException("찾는 유저가 없습니다."));
+    public UserResDto update(Long user_id, UserReqDto userReqDto) {
+        User foundUser = userRepository.findById(user_id).orElseThrow(() -> new RuntimeException("찾는 유저가 없습니다."));
         foundUser.updateUserByDto(userReqDto);
         try {
             userRepository.save(foundUser);
@@ -53,9 +53,9 @@ public class UserService {
     }
 
     @Transactional
-    public boolean delete(Long id) {
+    public boolean delete(Long user_id) {
         try {
-            userRepository.deleteById(id);
+            userRepository.deleteById(user_id);
             return true;
         } catch (Exception e) {
             return false;

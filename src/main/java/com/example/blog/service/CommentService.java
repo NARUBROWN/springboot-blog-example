@@ -15,8 +15,8 @@ public class CommentService {
     private final CommentRepository commentRepository;
     private final PostRepository postRepository;
 
-    public boolean create(CommentReqDto commentReqDto, Long postId) {
-        Post post = postRepository.findById(postId).orElseThrow(() -> new RuntimeException("게시글을 찾을 수 없습니다."));
+    public boolean create(CommentReqDto commentReqDto, Long post_id) {
+        Post post = postRepository.findById(post_id).orElseThrow(() -> new RuntimeException("게시글을 찾을 수 없습니다."));
         Comment newComment = Comment.builder()
                 .content(commentReqDto.getContent())
                 .post(post)
@@ -29,16 +29,16 @@ public class CommentService {
         }
     }
 
-    public CommentResDto read(Long commentId) {
-        Comment foundComment = commentRepository.findById(commentId).orElseThrow(() -> new RuntimeException("댓글을 찾을 수 없습니다."));
+    public CommentResDto read(Long comment_id) {
+        Comment foundComment = commentRepository.findById(comment_id).orElseThrow(() -> new RuntimeException("댓글을 찾을 수 없습니다."));
         return CommentResDto.builder()
                 .id(foundComment.getId())
                 .content(foundComment.getContent())
                 .build();
     }
 
-    public CommentResDto update(CommentReqDto commentReqDto, Long commentId) {
-        Comment foundComment = commentRepository.findById(commentId).orElseThrow(() -> new RuntimeException("댓글을 찾을 수 없습니다."));
+    public CommentResDto update(CommentReqDto commentReqDto, Long comment_id) {
+        Comment foundComment = commentRepository.findById(comment_id).orElseThrow(() -> new RuntimeException("댓글을 찾을 수 없습니다."));
         foundComment.updateByDto(commentReqDto);
         try {
             commentRepository.save(foundComment);
@@ -50,9 +50,9 @@ public class CommentService {
         }
     }
 
-    public boolean delete(Long commentId) {
+    public boolean delete(Long comment_id) {
         try {
-            commentRepository.deleteById(commentId);
+            commentRepository.deleteById(comment_id);
             return true;
         } catch (Exception e) {
             throw new RuntimeException("댓글을 삭제하는데 실패했습니다.");

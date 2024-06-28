@@ -18,8 +18,8 @@ public class PostController {
     public CommonResDto<Void> create(
             @RequestBody PostReqDto postReqDto,
             @RequestParam("username") String username,
-            @RequestParam("category_id") Long categoryId) {
-        if (postService.create(postReqDto, username, categoryId)) {
+            @RequestParam("category_id") Long category_id) {
+        if (postService.create(postReqDto, username, category_id)) {
             return new CommonResDto<>("게시글이 등록되었습니다.", null);
         }
         return new CommonResDto<>("게시글을 등록하는데 실패했습니다.", null);
