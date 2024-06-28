@@ -12,7 +12,6 @@ public class PostResDto {
     private String title;
     private String content;
     private String username;
-    private String categoryName;
 
     @Builder
     public PostResDto(Long id, String title, String content, String username, String categoryName) {
@@ -20,6 +19,5 @@ public class PostResDto {
         this.title = title;
         this.content = content;
         this.username = username;
-        this.categoryName = categoryName;
     }
 }

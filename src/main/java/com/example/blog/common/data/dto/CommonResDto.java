@@ -4,5 +4,4 @@ public record CommonResDto<T> (
         String msg,
         T result
 ) {
-
 }

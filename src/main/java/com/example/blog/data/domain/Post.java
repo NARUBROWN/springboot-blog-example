@@ -53,4 +53,5 @@ public class Post {
         this.title = postReqDto.getTitle();
         this.content = postReqDto.getContent();
     }
+
 }
