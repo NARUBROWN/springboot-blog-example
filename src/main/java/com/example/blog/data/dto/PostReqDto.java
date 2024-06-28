@@ -9,6 +9,4 @@ import lombok.NoArgsConstructor;
 public class PostReqDto {
     private String title;
     private String content;
-    private Long userId;
-    private Long categoryId;
 }

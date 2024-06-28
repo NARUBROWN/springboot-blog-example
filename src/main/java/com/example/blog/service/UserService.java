@@ -8,6 +8,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Optional;
+
 @Service
 @RequiredArgsConstructor
 public class UserService {
@@ -58,5 +60,11 @@ public class UserService {
         } catch (Exception e) {
             return false;
         }
+    }
+
+    @Transactional(readOnly = true)
+    public boolean checkUsernameAvailability(String username) {
+       Optional<User> user =  userRepository.findByUsername(username);
+       return user.isEmpty();
     }
 }

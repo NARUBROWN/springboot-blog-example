@@ -20,14 +20,14 @@ public class PostService {
     private final CategoryRepository categoryRepository;
 
     @Transactional
-    public boolean create(PostReqDto postReqDto) {
+    public boolean create(PostReqDto postReqDto, String username, Long categoryId) {
         Post newPost = Post.builder()
                 .title(postReqDto.getTitle())
                 .content(postReqDto.getContent())
                 .build();
 
-        User user = userRepository.findById(postReqDto.getUserId()).orElseThrow(() -> new RuntimeException("사용자를 찾을 수 없습니다."));
-        Category category = categoryRepository.findById(postReqDto.getCategoryId()).orElseThrow(() -> new RuntimeException("카테고리를 찾을 수 없습니다."));
+        User user = userRepository.findByUsername(username).orElseThrow(() -> new RuntimeException("사용자를 찾을 수 없습니다."));
+        Category category = categoryRepository.findById(categoryId).orElseThrow(() -> new RuntimeException("카테고리를 찾을 수 없습니다."));
 
         newPost.updateUser(user);
         newPost.updateCategory(category);

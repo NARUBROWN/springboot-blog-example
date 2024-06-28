@@ -15,7 +15,7 @@ public class UserController {
 
     /*
     * 회원가입
-    * */
+     * */
     @PostMapping
     public CommonResDto<Void> register(@RequestBody UserReqDto userReqDto) {
         if (userService.create(userReqDto)) {
@@ -55,5 +55,15 @@ public class UserController {
             return new CommonResDto<>("계정이 정상적으로 삭제되었습니다.", null);
         }
         return new CommonResDto<>("계정을 삭제하는데 실패했습니다.", null);
+    }
+
+
+    // username 중복체크
+    @GetMapping("/check-username-availability")
+    public CommonResDto<Void> checkUsernameAvailability(@RequestParam("username") String username) {
+        if (userService.checkUsernameAvailability(username)) {
+            return new CommonResDto<>("사용가능한 Username입니다.", null);
+        }
+        return new CommonResDto<>("사용 불가능한 Username입니다.", null);
     }
 }
