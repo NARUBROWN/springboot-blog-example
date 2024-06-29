@@ -1,22 +1,29 @@
 package com.example.blog.service;
 
 import com.example.blog.data.domain.Category;
+import com.example.blog.data.domain.Comment;
 import com.example.blog.data.domain.Post;
 import com.example.blog.data.domain.User;
+import com.example.blog.data.dto.CommentResDto;
 import com.example.blog.data.dto.PostReqDto;
 import com.example.blog.data.dto.PostResDto;
 import com.example.blog.repository.CategoryRepository;
+import com.example.blog.repository.CommentRepository;
 import com.example.blog.repository.PostRepository;
 import com.example.blog.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 @Service
 @RequiredArgsConstructor
 public class PostService {
     private final PostRepository postRepository;
     private final UserRepository userRepository;
+    private final CommentRepository commentRepository;
     private final CategoryRepository categoryRepository;
 
     @Transactional
@@ -43,13 +50,27 @@ public class PostService {
     @Transactional(readOnly = true)
     public PostResDto read(Long post_id) {
        Post foundPost = postRepository.findById(post_id).orElseThrow(() -> new RuntimeException("게시글을 찾을 수 없습니다."));
+       // 루트 댓글 조회
+       List<Comment> commentList = commentRepository.findAllByPost_IdAndParentIsNull(post_id);
+       List<CommentResDto> commentResDtoList = commentList.stream().map(this::convertTo).collect(Collectors.toList());
+
        return PostResDto.builder()
                .id(foundPost.getId())
                .username(foundPost.getUser().getUsername())
                .title(foundPost.getTitle())
                .content(foundPost.getContent())
-               .categoryName(foundPost.getCategory().getName())
+               .commentResDtoList(commentResDtoList)
                .build();
+    }
+
+    private CommentResDto convertTo(Comment comment) {
+        return CommentResDto.builder()
+                .id(comment.getId())
+                .content(comment.getContent())
+                .replies(comment.getReplies().stream()
+                        .map(this::convertTo)
+                        .collect(Collectors.toList()))
+                .build();
     }
 
     public PostResDto update(Long post_id, PostReqDto postReqDto) {
@@ -62,7 +83,6 @@ public class PostService {
                     .title(foundPost.getTitle())
                     .content(foundPost.getContent())
                     .username(foundPost.getUser().getUsername())
-                    .categoryName(foundPost.getCategory().getName())
                     .build();
         } catch (Exception e) {
             throw new RuntimeException("게시글을 저장하는데 오류가 발생했습니다.");

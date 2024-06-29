@@ -5,6 +5,8 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
+
 @Getter
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class PostResDto {
@@ -12,12 +14,14 @@ public class PostResDto {
     private String title;
     private String content;
     private String username;
+    private List<CommentResDto> comment;
 
     @Builder
-    public PostResDto(Long id, String title, String content, String username, String categoryName) {
+    public PostResDto(Long id, String title, String content, String username, List<CommentResDto> commentResDtoList) {
         this.id = id;
         this.title = title;
         this.content = content;
         this.username = username;
+        this.comment = commentResDtoList;
     }
 }

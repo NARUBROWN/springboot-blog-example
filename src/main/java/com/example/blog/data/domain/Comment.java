@@ -7,6 +7,8 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
+
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
 @Table(name = "comment")
@@ -23,6 +25,13 @@ public class Comment {
     @JoinColumn(name = "post_id")
     private Post post;
 
+    @ManyToOne
+    @JoinColumn(name = "parent_id")
+    private Comment parent;
+
+    @OneToMany(mappedBy = "parent", cascade = CascadeType.ALL)
+    private List<Comment> replies;
+
     @Builder
     public Comment(String content, Post post) {
         this.content = content;
@@ -31,5 +40,9 @@ public class Comment {
 
     public void updateByDto(CommentReqDto commentReqDto) {
         this.content = commentReqDto.getContent();
+    }
+
+    public void addParent(Comment parent) {
+        this.parent = parent;
     }
 }
