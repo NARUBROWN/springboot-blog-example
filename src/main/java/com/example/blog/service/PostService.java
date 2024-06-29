@@ -50,9 +50,8 @@ public class PostService {
     @Transactional(readOnly = true)
     public PostResDto read(Long post_id) {
        Post foundPost = postRepository.findById(post_id).orElseThrow(() -> new RuntimeException("게시글을 찾을 수 없습니다."));
-       // 루트 댓글 조회
        List<Comment> commentList = commentRepository.findAllByPost_IdAndParentIsNull(post_id);
-       List<CommentResDto> commentResDtoList = commentList.stream().map(this::convertTo).collect(Collectors.toList());
+       List<CommentResDto> commentResDtoList = commentList.stream().map(this::convertToDto).collect(Collectors.toList());
 
        return PostResDto.builder()
                .id(foundPost.getId())
@@ -63,15 +62,16 @@ public class PostService {
                .build();
     }
 
-    private CommentResDto convertTo(Comment comment) {
+    private CommentResDto convertToDto(Comment comment) {
         return CommentResDto.builder()
                 .id(comment.getId())
                 .content(comment.getContent())
                 .replies(comment.getReplies().stream()
-                        .map(this::convertTo)
+                        .map(this::convertToDto)
                         .collect(Collectors.toList()))
                 .build();
     }
+
 
     public PostResDto update(Long post_id, PostReqDto postReqDto) {
         Post foundPost = postRepository.findById(post_id).orElseThrow(() -> new RuntimeException("게시글이 없습니다."));
