@@ -63,6 +63,7 @@ public class OauthController {
                 request,
                 UserInfoResDto.class
         );
+        // -> 인가 -> Access Token 받고 -> 사용자가 가입자 or 가입자 아닌지 판별 -> 만약에 가입자가 아니면 -> 프론트에 리다이렉트 시킬 수 있도록
 
         return ResponseEntity.status(HttpStatus.OK).body(response.getBody());
     }

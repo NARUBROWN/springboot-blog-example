@@ -14,17 +14,6 @@ public class UserController {
     private final UserService userService;
 
     /*
-    * 회원가입
-     * */
-    @PostMapping
-    public CommonResDto<Void> register(@RequestBody UserReqDto userReqDto) {
-        if (userService.create(userReqDto)) {
-            return new CommonResDto<>("회원가입이 완료되었습니다.", null);
-        }
-        return new CommonResDto<>("회원가입에 실패했습니다.", null);
-    }
-
-    /*
     * 회원정보 불러오기
     * */
     @GetMapping("/{user_id}")

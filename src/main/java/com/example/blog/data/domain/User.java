@@ -6,15 +6,28 @@ import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
+
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
 @Table(name = "user")
 @Getter
-public class User {
+@Slf4j
+public class User implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    @Column(nullable = false)
+    private String email;
 
     @Column(nullable = false)
     private String username;
@@ -22,14 +35,32 @@ public class User {
     @Column(nullable = false)
     private String password;
 
+    @ElementCollection(fetch = FetchType.EAGER)
+    private List<String> roles = new ArrayList<>();
+
+
     @Builder
-    public User(String username, String password) {
+    public User(String username, String password, String email, List<String> roles) {
         this.username = username;
         this.password = password;
+        this.email = email;
+        this.roles = roles;
     }
 
     public void updateUserByDto(UserReqDto userReqDto) {
         this.username = userReqDto.getUsername();
         this.password = userReqDto.getPassword();
+        this.email = userReqDto.getEmail();
+    }
+
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        log.info("getAuthorities 호출됨");
+        return this.roles.stream().map(SimpleGrantedAuthority::new).collect(Collectors.toList());
+    }
+
+    @Override
+    public String getUsername() {
+        return this.username;
     }
 }
