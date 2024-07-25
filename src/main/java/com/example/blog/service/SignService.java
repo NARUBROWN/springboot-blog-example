@@ -43,7 +43,7 @@ public class SignService {
             throw new RuntimeException("패스워드가 일치하지 않음");
         }
 
-        String accessToken = jwtProvider.createAccessToken(foundUser.getId(), foundUser.getEmail());
+        String accessToken = jwtProvider.createAccessToken(foundUser.getEmail());
         return SignInResDto.builder()
                 .token(accessToken)
                 .build();

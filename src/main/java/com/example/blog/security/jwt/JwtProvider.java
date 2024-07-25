@@ -29,7 +29,7 @@ public class JwtProvider {
         secretKey = Keys.secretKeyFor(SignatureAlgorithm.HS256);
     }
 
-    public String createAccessToken(Long user_id, String user_email) {
+    public String createAccessToken(String user_email) {
         /* Claims 객체 생성, sub(subject) 클레임을 설정하는 메서드
             JWT는 Header, Payload, Signature 로 설정되며 Payload는 Claims로 구성됨
             Claims에는 등록된 클레임, 공개 클레임, 비공개 클레임이 있고 등록된 클레임에는 iss(발급자), exp(만료일), sub(subject),
@@ -53,13 +53,12 @@ public class JwtProvider {
         return new UsernamePasswordAuthenticationToken(userDetails, "", userDetails.getAuthorities());
     }
 
-    public String getEmail(String token) {
+    private String getEmail(String token) {
         Claims claims = Jwts.parserBuilder()
                 .setSigningKey(secretKey)
                 .build()
                 .parseClaimsJws(token)
                 .getBody();
-
         return claims.getSubject();
     }
 

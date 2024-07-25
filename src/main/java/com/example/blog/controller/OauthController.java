@@ -2,6 +2,7 @@ package com.example.blog.controller;
 
 import com.example.blog.data.dto.TokenResDto;
 import com.example.blog.data.dto.UserInfoResDto;
+import com.example.blog.service.OauthService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
@@ -21,6 +22,8 @@ public class OauthController {
     @Value("${client_id}")
     private String clientId;
     private final WebClient webClient;
+    private final OauthService oauthService;
+
     @GetMapping("/kakao")
     ResponseEntity<?> kakaoLogin(@RequestParam String code) {
         log.info("kakao login code: " + code);
@@ -37,20 +40,13 @@ public class OauthController {
                 .bodyToMono(TokenResDto.class)
                 .block();
 
-
-        return ResponseEntity.status(HttpStatus.OK).body(tokenResDto.getAccess_token());
-    }
-
-    @GetMapping("/kakaoGetUserInfo")
-    ResponseEntity<?> kakaoGetUserInfo(@RequestParam String AccessCode) {
-
         UserInfoResDto response = webClient.post()
                 .uri("https://kapi.kakao.com/v2/user/me")
-                .header("Authorization", "Bearer " + AccessCode)
+                .header("Authorization", "Bearer " + tokenResDto.getAccess_token())
                 .retrieve()
                 .bodyToMono(UserInfoResDto.class)
                 .block();
 
-        return ResponseEntity.status(HttpStatus.OK).body(response);
+        return ResponseEntity.status(HttpStatus.OK).body(oauthService.register(response));
     }
 }

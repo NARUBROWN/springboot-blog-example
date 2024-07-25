@@ -1,10 +1,11 @@
 package com.example.blog.data.dto;
 
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 @Getter
-@Setter
+@AllArgsConstructor
+@Builder
+@NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class TokenResDto {
     private String access_token;
     private String refresh_token;

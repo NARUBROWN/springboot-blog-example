@@ -8,6 +8,7 @@ import lombok.Setter;
 public class UserInfoResDto {
     private Long id;
     private Properties properties;
+    private Kakao_account kakao_account;
 
     @Getter
     @Setter
@@ -15,5 +16,20 @@ public class UserInfoResDto {
         private String nickname;
         private String profileImage;
         private String thumbnailImage;
+    }
+
+    @Getter
+    @Setter
+    public static class Kakao_account {
+        private String email;
+        private String name;
+        private Profile profile;
+    }
+
+    @Getter
+    @Setter
+    public static class Profile {
+        private String nickname;
+        private String profile_image_url;
     }
 }
